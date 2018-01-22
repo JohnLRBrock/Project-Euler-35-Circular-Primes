@@ -35,26 +35,31 @@ def prime?(n)
   return $sieve[n]
 end
 
+# int -> int
 def rotate(n)
-  puts n
-  array = n.to_s.split
-  temp = array.slice!(0, 1)
-  puts temp
-
-  array = array.push(temp)
-  output = array.join()
+  string = n.to_s
+  return false if string.length < 2
+  string.prepend(string[string.length - 1]).chop.to_i
 end
 
-puts rotate(123)
-
 def circular_prime?(n)
-  
-  return true if n.to_s.length == 1 && prime?(n)
-
+  return true if n < 10 && prime?(n)
+  return false unless prime?(n)
+  (n.digits.length - 1).times do
+    n = rotate(n)
+    return false unless prime?(n)
+  end
+  return true
 end
 
 def circular_prime_count(limit)
-  0
+  n = 1
+  count = 0
+  while n < limit
+    count += 1 if circular_prime?(n)
+    n += 1
+  end
+  count
 end
 
 start = Time.now
